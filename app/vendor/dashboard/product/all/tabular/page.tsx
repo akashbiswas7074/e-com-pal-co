@@ -1,13 +1,18 @@
 "use client";
 
-import ProductsDataTable from "@/components/vendor/dashboard/data.products.table";
+import dynamic from 'next/dynamic';
 import { getVendorProducts } from "@/lib/database/actions/vendor/products/products.actions";
 import { getVendorCookiesandFetchVendor } from "@/lib/database/actions/vendor/vendor.actions";
 import { useState, useEffect } from "react";
+
+// Dynamically import the component with ssr: false
+const ProductsDataTable = dynamic(() => import('@/components/vendor/dashboard/data.products.table'), { ssr: false });
+
 const AllProductsPage = () => {
   const [vendor, setVendor] = useState<any>(null);
   const [products, setProducts] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
+
   useEffect(() => {
     try {
       const fetchVendorDetails = async () => {
@@ -27,6 +32,7 @@ const AllProductsPage = () => {
       console.log(error);
     }
   }, []);
+
   useEffect(() => {
     const fetchAllProducts = async () => {
       try {
@@ -43,6 +49,7 @@ const AllProductsPage = () => {
       fetchAllProducts();
     }
   }, [vendor]);
+
   return (
     <div className="container">
       <div className="mb-[1rem] titleStyle">All Products</div>
